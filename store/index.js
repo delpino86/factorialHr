@@ -8,16 +8,13 @@ export const getters = {
 };
 
 export const actions = {
-   
-    addUser({ commit }, {...user}) {
-        
+    addUser({ commit }, { ...user }) {
         commit("setUser", user);
     },
 };
 
 export const mutations = {
     setUser(state, { ...user }) {
-        
-        state.users.push(user) ;
+        state.users.push(user);
     },
 };
