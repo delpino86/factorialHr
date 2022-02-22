@@ -1,0 +1,22 @@
+{
+    "users": [
+        {
+            "firstName": "Ivan",
+            "secondName": "del Pino",
+            "avatar": "https://source.unsplash.com/random/?men",
+            "email": "delPino@gmail.com",
+            "telephoneNumber": "666666666",
+            "id": "-KpR7vRkiRPpbUd_IVAN",
+            "createddAt": 1594035908
+        },
+        {
+            "firstName": "Omar",
+            "secondName": "Sotillo",
+            "avatar": "https://source.unsplash.com/random/?men",
+            "email": "omar@gmail.com",
+            "telephoneNumber": "666666666",
+            "id": "-KpR7vRkiRPpbUd_OMAR",
+            "createddAt": 1594035348
+        }
+    ]
+}
