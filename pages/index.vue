@@ -12,9 +12,7 @@
                     </p>
                 </v-card-text>
                 <v-list flat class="my-9">
-                    <v-btn color="primary" @click.prevent="addUser">
-                        addUser
-                    </v-btn>
+                    <user-form></user-form>
 
                     <v-subheader>Users</v-subheader>
                     <v-list-item-group v-model="selectedUser" color="primary">
@@ -46,9 +44,13 @@
 
 <script>
     import { mapGetters } from "vuex";
+    import UserForm from "../components/UserForm.vue";
 
     export default {
         name: "IndexPage",
+        components: {
+            UserForm,
+        },
         data() {
             return {
                 selectedUser: 1,
@@ -61,20 +63,6 @@
         },
         computed: {
             ...mapGetters(["users"]),
-        },
-        methods: {
-            addUser() {
-                const user = {
-                    firstName: "Pedro",
-                    secondName: "Rodriguez",
-                    avatar: "https://source.unsplash.com/random/?men",
-                    email: "delPino@gmail.com",
-                    telephoneNumber: "666666666",
-                    id: "-KpR7vRkiRPpbUd_Pedro",
-                    createddAt: 1594035908,
-                };
-                this.$store.dispatch("addUser", user);
-            },
         },
     };
 </script>
