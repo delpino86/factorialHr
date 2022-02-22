@@ -47,7 +47,7 @@
                     <v-btn color="blue darken-1" text @click="dialog = false">
                         Close
                     </v-btn>
-                    <v-btn color="blue darken-1"  text @click="addUser">
+                    <v-btn color="blue darken-1" text @click="addUser">
                         Save
                     </v-btn>
                 </v-card-actions>
@@ -76,9 +76,9 @@
                     createddAt: 1594035908,
                 };
                 this.$store.dispatch("addUser", user);
-                                this.$store.dispatch("test", user);
+                this.$store.dispatch("test", user);
 
-                this.dialog = false
+                this.dialog = false;
             },
         },
     };
