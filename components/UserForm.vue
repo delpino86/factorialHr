@@ -76,6 +76,8 @@
                     createddAt: 1594035908,
                 };
                 this.$store.dispatch("addUser", user);
+                                this.$store.dispatch("test", user);
+
                 this.dialog = false
             },
         },

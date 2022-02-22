@@ -3,7 +3,7 @@
         <v-col cols="12" sm="8" md="6">
             <v-card class="logo py-4 d-flex justify-center"> </v-card>
             <v-card>
-                <v-card-title class="headline"> Welcome Factorial </v-card-title>
+                <v-card-title class="headline"> {{test}} </v-card-title>
                 <v-card-text>
                     <p>
                         Vuetify is a progressive Material Design component
@@ -54,15 +54,13 @@
         data() {
             return {
                 selectedUser: 1,
-                items: [
-                    { text: "Real-Time", icon: "mdi-clock" },
-                    { text: "Audience", icon: "mdi-account" },
-                    { text: "Conversions", icon: "mdi-flag" },
-                ],
             };
         },
         computed: {
-            ...mapGetters(["users"]),
+            ...mapGetters(["users", "test"]),
+        },
+        mounted(){
+this.$store.dispatch('fetchAllUsers')
         },
     };
 </script>
