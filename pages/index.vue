@@ -80,12 +80,11 @@
                 const secondNameInitial = user?.secondName
                     .charAt(0)
                     .toUpperCase();
-                return "" ||`${firstNameInitial} ${secondNameInitial}`;
+                return "" || `${firstNameInitial} ${secondNameInitial}`;
             },
             deleteUser(user) {
                 this.$store.dispatch("deleteUser", user);
             },
         },
-
-};
+    };
 </script>

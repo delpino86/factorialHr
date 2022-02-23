@@ -47,7 +47,7 @@
                     <v-btn color="blue darken-1" text @click="dialog = false">
                         Close
                     </v-btn>
-                    <v-btn color="blue darken-1"  text @click="addUser">
+                    <v-btn color="blue darken-1" text @click="addUser">
                         Save
                     </v-btn>
                 </v-card-actions>
@@ -73,7 +73,7 @@
                     telephoneNumber: this.telephoneNumber,
                 };
                 this.$store.dispatch("addUser", user);
-                this.dialog = false
+                this.dialog = false;
             },
         },
     };
