@@ -47,7 +47,7 @@
                     <v-btn color="blue darken-1" text @click="dialog = false">
                         Close
                     </v-btn>
-                    <v-btn color="blue darken-1" text @click="addUser">
+                    <v-btn color="blue darken-1"  text @click="addUser">
                         Save
                     </v-btn>
                 </v-card-actions>
@@ -69,16 +69,11 @@
                 const user = {
                     firstName: this.firstName,
                     secondName: this.secondName,
-                    avatar: "https://source.unsplash.com/random/?men",
                     email: this.email,
                     telephoneNumber: this.telephoneNumber,
-                    id: `-KpR7vRkiRPpbUd_${this.firstName}`,
-                    createddAt: 1594035908,
                 };
                 this.$store.dispatch("addUser", user);
-                this.$store.dispatch("test", user);
-
-                this.dialog = false;
+                this.dialog = false
             },
         },
     };
