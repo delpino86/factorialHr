@@ -109,14 +109,15 @@
                     email: this.email,
                     telephoneNumber: this.telephoneNumber,
                 };
-                if(this.createNewUser){
-                this.$store.dispatch("addUser", user);
-                this.closeDialog()}else{
-                    
-                                    user.id = this.userToEdit.id
+                if (this.createNewUser) {
+                    this.$store.dispatch("addUser", user);
+                    this.closeDialog();
+                } else {
+                    user.id = this.userToEdit.id;
 
                     this.$store.dispatch("editUser", user);
-                this.closeDialog();}
+                    this.closeDialog();
+                }
             },
             closeDialog() {
                 this.dialog = false;

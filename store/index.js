@@ -22,7 +22,9 @@ export const actions = {
         if (User) commit("deleteUser", user);
     },
     async editUser({ commit }, user) {
-        const User = await this.$axios.$put(`/api/user-edit/${user.id}`,{...user});
+        const User = await this.$axios.$put(`/api/user-edit/${user.id}`, {
+            ...user,
+        });
         if (User) commit("editUser", user);
     },
 };
@@ -43,7 +45,7 @@ export const mutations = {
         const newUsersList = state.users.filter(
             (stateUser) => stateUser.id !== user.id
         );
-        newUsersList.push(user)
-        state.users = newUsersList
+        newUsersList.push(user);
+        state.users = newUsersList;
     },
 };

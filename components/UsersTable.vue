@@ -100,7 +100,7 @@
             dialog(val) {
                 val || console.log(val);
             },
-            usersList:{
+            usersList: {
                 handler(after, before) {
                     this.users = after;
                 },
@@ -137,7 +137,7 @@
             },
 
             deleteItemConfirm() {
-                this.$store.dispatch('deleteUser', this.editedItem)
+                this.$store.dispatch("deleteUser", this.editedItem);
                 this.closeDelete();
             },
 
