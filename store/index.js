@@ -1,12 +1,8 @@
-// import data from "../data.json";
-
 export const state = () => ({
     users: [],
-    test: "Hardcoded",
 });
 export const getters = {
     users: (state) => state.users,
-    test: (state) => state.test,
 };
 
 export const actions = {
@@ -14,12 +10,14 @@ export const actions = {
         const Users = await this.$axios.$get("/api/users");
         commit("setAllUsers", Users);
     },
-    addUser({ commit }, { ...user }) {
-        commit("setUser", user);
+    async addUser({ commit }, user) {
+        const User = await this.$axios.$post("/api/user-create", { ...user });
+
+        commit("setUser", User);
     },
-    async test({ commit }) {
-        const test = await this.$axios.$get("/api/test");
-        commit("test", test);
+    async deleteUser({ commit }, user) {
+        const User = await this.$axios.$delete(`/api/user-delete/${user.id}`);
+        if (User) commit("deleteUser", user);
     },
 };
 
@@ -30,7 +28,9 @@ export const mutations = {
     setUser(state, { ...user }) {
         state.users.push(user);
     },
-    test(state, test) {
-        state.test = test;
+    deleteUser(state, { ...user }) {
+        state.users = state.users.filter(
+            (stateUser) => stateUser.id !== user.id
+        );
     },
 };

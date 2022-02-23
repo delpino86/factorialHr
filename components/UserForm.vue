@@ -69,15 +69,10 @@
                 const user = {
                     firstName: this.firstName,
                     secondName: this.secondName,
-                    avatar: "https://source.unsplash.com/random/?men",
                     email: this.email,
                     telephoneNumber: this.telephoneNumber,
-                    id: `-KpR7vRkiRPpbUd_${this.firstName}`,
-                    createddAt: 1594035908,
                 };
                 this.$store.dispatch("addUser", user);
-                this.$store.dispatch("test", user);
-
                 this.dialog = false;
             },
         },
