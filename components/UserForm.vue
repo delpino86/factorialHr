@@ -15,26 +15,26 @@
                         <v-row>
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                    v-model="firstName"
+                                    v-model="user.firstName"
                                     label="First name*"
                                     required></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                    v-model="secondName"
+                                    v-model="user.secondName"
                                     label="Second name"
                                     hint="example of helper text only on focus"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4"> </v-col>
                             <v-col cols="12">
                                 <v-text-field
-                                    v-model="email"
+                                    v-model="user.email"
                                     label="Email*"
                                     required></v-text-field>
                             </v-col>
                             <v-col cols="12">
                                 <v-text-field
-                                    v-model="telephoneNumber"
+                                    v-model="user.telephoneNumber"
                                     label="Telephone*"
                                     required></v-text-field>
                             </v-col>
@@ -69,10 +69,16 @@
         },
         data: () => ({
             dialog: false,
-            firstName: "",
-            secondName: "",
-            email: "",
-            telephoneNumber: "",
+            user: {
+                firstName: "",
+                secondName: "",
+                email: "",
+                telephoneNumber: "",
+            },
+            dirtyFirstName: "",
+            dirtySecondName: "",
+            dirtyEmail: "",
+            dirtyTelephoneNumber: "",
         }),
         computed: {
             usersssss() {
@@ -93,28 +99,36 @@
             },
             userToEdit: {
                 handler(after, before) {
-                    this.firstName = after.firstName;
-                    this.secondName = after.secondName;
-                    this.email = after.email;
-                    this.telephoneNumber = after.telephoneNumber;
+                    this.user.firstName = after.firstName;
+                    this.user.secondName = after.lastName;
+                    this.user.email = after.email;
+                    this.user.telephoneNumber = after.telephoneNumber;
+                },
+                deep: true,
+            },
+            user: {
+                handler(after, before) {
+                    this.dirtyFirstName = before.firstName;
+                    this.dirtySecondName = before.lastName;
+                    this.dirtyEmail = before.email;
+                    this.dirtytelephoneNumber = before.telephoneNumber;
                 },
                 deep: true,
             },
         },
         methods: {
             addUser() {
-                const user = {
-                    firstName: this.firstName,
-                    secondName: this.secondName,
-                    email: this.email,
-                    telephoneNumber: this.telephoneNumber,
-                };
+                const user = { ...this.user };
                 if (this.createNewUser) {
                     this.$store.dispatch("addUser", user);
                     this.closeDialog();
                 } else {
                     user.id = this.userToEdit.id;
-
+                    user.dirtyFirstName = this.dirtyFirstName;
+                    user.dirtySecondName = this.dirtySecondName;
+                    user.dirtyEmail = this.dirtyEmail;
+                    user.dirtyTelephoneNumber = this.dirtyTelephoneNumber;
+                    console.log(user);
                     this.$store.dispatch("editUser", user);
                     this.closeDialog();
                 }

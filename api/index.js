@@ -12,22 +12,22 @@ app.get("/test", function (req, res) {
 });
 
 app.get("/users", async function (req, res) {
-    const Users = await prisma.user.findMany();
+    const Users = await prisma.User.findMany();
     res.json(Users);
 });
 app.post(`/user-create`, async (req, res) => {
-    const result = await prisma.user.create({
+    const result = await prisma.User.create({
         data: {
             email: req.body.email,
             firstName: req.body.firstName,
-            secondName: req.body.secondName,
+            lastName: req.body.secondName,
             telephoneNumber: req.body.telephoneNumber,
         },
     });
     res.json(result);
 });
 app.delete("/user-delete/:id", async function (req, res) {
-    await prisma.user.delete({
+    await prisma.User.delete({
         where: {
             id: parseInt(req.params.id),
         },
@@ -35,7 +35,7 @@ app.delete("/user-delete/:id", async function (req, res) {
     res.send(true);
 });
 app.put("/user-edit/:id", async function (req, res) {
-    await prisma.user.update({
+    const user = await prisma.User.update({
         where: {
             id: parseInt(req.params.id),
         },
@@ -43,12 +43,21 @@ app.put("/user-edit/:id", async function (req, res) {
         data: {
             email: req.body.email,
             firstName: req.body.firstName,
-            secondName: req.body.secondName,
+            lastName: req.body.secondName,
             telephoneNumber: req.body.telephoneNumber,
-            editedAt: new Date(),
         },
     });
-    res.send(true);
+    await prisma.userUpdated.create({
+        data: {
+            changedFirstName: req.body.dirtyFirstName,
+            changedLastName: req.body.dirtySecondName,
+            changedEmail: req.body.dirtyEmail,
+            changedTelephoneNumber: req.body.dirtyTelephonenumber,
+            userId: parseInt(req.params.id),
+        },
+    });
+
+    res.json(user);
 });
 export default {
     path: "/api",

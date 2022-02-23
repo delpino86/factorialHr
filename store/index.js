@@ -25,7 +25,8 @@ export const actions = {
         const User = await this.$axios.$put(`/api/user-edit/${user.id}`, {
             ...user,
         });
-        if (User) commit("editUser", user);
+        console.log(User);
+        if (User) commit("editUser", User);
     },
 };
 
@@ -47,5 +48,6 @@ export const mutations = {
         );
         newUsersList.push(user);
         state.users = newUsersList;
+        console.log(state.users);
     },
 };
