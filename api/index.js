@@ -27,9 +27,27 @@ app.post(`/user-create`, async (req, res) => {
     res.json(result);
 });
 app.delete("/user-delete/:id", async function (req, res) {
+
     await prisma.user.delete({
         where: {
             id: parseInt(req.params.id),
+        },
+    });
+    res.send(true);
+});
+app.put("/user-edit/:id", async function (req, res) {
+
+    await prisma.user.update({
+        where: {
+            id: parseInt(req.params.id),
+        },
+        
+        data: {
+            email: req.body.email,
+            firstName: req.body.firstName,
+            secondName: req.body.secondName,
+            telephoneNumber: req.body.telephoneNumber,
+            editedAt: new Date()
         },
     });
     res.send(true);

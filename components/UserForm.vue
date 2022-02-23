@@ -8,7 +8,7 @@
             </template>
             <v-card>
                 <v-card-title>
-                    <span class="text-h5">User Profile</span>
+                    <span class="text-h5">{{ cardTitle }}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -44,7 +44,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false">
+                    <v-btn color="blue darken-1" text @click="closeDialog">
                         Close
                     </v-btn>
                     <v-btn color="blue darken-1" text @click="addUser">
@@ -57,6 +57,16 @@
 </template>
 <script>
     export default {
+        props: {
+            editToggle: {
+                type: Boolean,
+                default: false,
+            },
+            userToEdit: {
+                type: Object,
+                default: () => {},
+            },
+        },
         data: () => ({
             dialog: false,
             firstName: "",
@@ -64,6 +74,33 @@
             email: "",
             telephoneNumber: "",
         }),
+        computed: {
+            usersssss() {
+                return this.userToEdit;
+            },
+            createNewUser() {
+                return Object.keys({ ...this.userToEdit }).length === 0;
+            },
+            cardTitle() {
+                return !this.createNewUser
+                    ? `Edit ${this.firstName} profile`
+                    : "Create new user";
+            },
+        },
+        watch: {
+            editToggle() {
+                this.dialog = this.editToggle;
+            },
+            userToEdit: {
+                handler(after, before) {
+                    this.firstName = after.firstName;
+                    this.secondName = after.secondName;
+                    this.email = after.email;
+                    this.telephoneNumber = after.telephoneNumber;
+                },
+                deep: true,
+            },
+        },
         methods: {
             addUser() {
                 const user = {
@@ -72,8 +109,18 @@
                     email: this.email,
                     telephoneNumber: this.telephoneNumber,
                 };
+                if(this.createNewUser){
                 this.$store.dispatch("addUser", user);
+                this.closeDialog()}else{
+                    
+                                    user.id = this.userToEdit.id
+
+                    this.$store.dispatch("editUser", user);
+                this.closeDialog();}
+            },
+            closeDialog() {
                 this.dialog = false;
+                this.$emit("closeDialog");
             },
         },
     };
