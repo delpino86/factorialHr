@@ -72,7 +72,7 @@
                     sortable: false,
                     value: "firstName",
                 },
-                { text: "SURNAME", value: "secondName" },
+                { text: "SURNAME", value: "lastName" },
                 { text: "EMAIL", value: "email" },
                 { text: "TELEPHONE", value: "telephoneNumber" },
                 { text: "CREATED", value: "createdAt" },
@@ -122,7 +122,7 @@
 
             editItem(item) {
                 this.editedIndex = this.users.indexOf(item);
-                this.editedItem = Object.assign({}, item);
+                this.editedItem = item;
                 this.dialog = true;
             },
             dialogClosed() {

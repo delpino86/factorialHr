@@ -9,13 +9,25 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  firstName  String?
-  secondName String?
-  telephoneNumber String?
-  createdAt  DateTime   @default(now())
-    editedAt  DateTime?   
 
+model userUpdated {
+  id        Int     @default(autoincrement()) @id
+  changedFirstName     String?
+  changedLastName   String?
+  changedEmail String?
+  changedTelephoneNumber String?
+  user    User?   @relation(fields: [userId], references: [id])
+  userId  Int?
+}
+
+model User {
+  id            Int       @default(autoincrement()) @id
+  firstName          String?
+  lastName          String?
+  email         String?   @unique
+  telephoneNumber          String?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  updates       userUpdated[]
+  @@map(name: "users")
 }
