@@ -5,7 +5,8 @@ CREATE TABLE "User" (
     "firstName" TEXT,
     "secondName" TEXT,
     "telephoneNumber" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "editedAt" DATETIME
 );
 
 -- CreateIndex
