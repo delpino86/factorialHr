@@ -7,12 +7,6 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <slot></slot>
-                <!-- <v-btn color="blue darken-1" text @click="cancelAlert"
-                    >Back</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="closeDialog"
-                    >Cancel new user</v-btn
-                > -->
                 <v-spacer></v-spacer>
             </v-card-actions>
         </v-card>

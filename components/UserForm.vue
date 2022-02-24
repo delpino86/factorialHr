@@ -64,29 +64,6 @@
                 </v-form>
             </v-card>
         </v-dialog>
-        <!-- <v-dialog v-model="alertValidation" max-width="500px">
-                    <v-card>
-                        <v-card-title class="text-h5"
-                            >Some of the data has to be reviwed before carry on</v-card-title
-                        >
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="alertValidation = false"
-                                >Back to form</v-btn
-                            >
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="closeDialog"
-                                >Cancel new user</v-btn
-                            >
-                            <v-spacer></v-spacer>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog> -->
         <alert-dialog
             :activator-alert="alertValidation"
             :title-alert="'Some of the data has to be reviwed before carry on'"
