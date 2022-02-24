@@ -29,6 +29,17 @@
             </v-toolbar>
         </template>
         <template #[`item.actions`]="{ item }">
+            <v-btn
+            class="mr-2"
+              color="transparent"
+              fab
+              x-small
+              flat
+              depressed
+              :to="{name:'user-id-userDetail', params: {id: item.id}}"
+            >
+              <v-icon>mdi-face-man-shimmer-outline</v-icon>
+            </v-btn>
             <v-icon small class="mr-2" @click="editItem(item)">
                 mdi-pencil
             </v-icon>
