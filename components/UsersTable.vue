@@ -12,7 +12,7 @@
                 <user-form
                     :edit-toggle="dialog"
                     :user-to-edit="editedItem"
-                    :create-user="true"
+                    :create-user="userProfile"
                     @closeDialog="dialogClosed"></user-form>
                 <alert-dialog
                     :activator-alert="dialogDelete"
@@ -92,6 +92,7 @@
 <script>
     import UserForm from "../components/UserForm.vue";
     import AlertDialog from "../components/AlertDialog.vue";
+
     export default {
         components: { UserForm, AlertDialog },
         props: {
@@ -184,6 +185,8 @@
             deleteItemConfirm() {
                 this.$store.dispatch("deleteUser", this.editedItem);
                 this.closeDelete();
+                if (this.$route.name !== "index")
+                    this.$router.push({ name: "index" });
             },
 
             close() {

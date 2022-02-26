@@ -28,13 +28,6 @@ app.get("/userUpdates/:id", async function (req, res) {
         where: {
             userId: parseInt(req.params.id),
         },
-        select: {
-            changedFirstName: true,
-            changedLastName: true,
-            changedEmail: true,
-            changedTelephoneNumber: true,
-            updatedAt: true,
-        },
     });
     res.json(Updates);
 });
@@ -83,8 +76,6 @@ app.post("/user-save-edit/:id", async function (req, res) {
             userId: parseInt(req.params.id),
         },
     });
-    delete Update.id;
-    delete Update.userId;
 
     res.json(Update);
 });

@@ -2,7 +2,7 @@
     <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="600px">
             <template v-if="createUser" #activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                <v-btn text v-bind="attrs" rounded depressed v-on="on">
                     New User
                 </v-btn>
             </template>
@@ -68,12 +68,12 @@
             :activator-alert="alertValidation"
             :title-alert="'Some of the data has to be reviwed before carry on'"
             @cancelAlert="alertValidation = false">
-            <v-btn color="blue darken-1" text @click="alertValidation = false"
-                >Back to form</v-btn
-            >
-            <v-btn color="blue darken-1" text @click="closeDialog"
-                >Cancel new user</v-btn
-            >
+            <v-btn color="blue darken-1" text @click="alertValidation = false">{{
+                AlertReturnBtn
+            }}</v-btn>
+            <v-btn color="blue darken-1" text @click="closeDialog">{{
+                AlertCancelBtn
+            }}</v-btn>
         </alert-dialog>
     </v-row>
 </template>
@@ -142,6 +142,15 @@
                     ? `Edit ${this.firstName} profile`
                     : "Create new user";
             },
+            AlertReturnBtn() {
+                if (!this.createNewUser) return `Update ${this.user.firstName}`;
+                return "create new user";
+            },
+            AlertCancelBtn() {
+                if (!this.createNewUser)
+                    return `Cancel Update ${this.user.firstName}`;
+                return "Cancel new user";
+            },
         },
         watch: {
             editToggle() {
@@ -187,8 +196,17 @@
                             ? (user.dirtyTelephoneNumber = null)
                             : (user.dirtyTelephoneNumber =
                                   this.dirtyTelephoneNumber);
-                        this.$store.dispatch("editUser", user);
-                        this.closeDialog();
+                        if (
+                            user.dirtyTelephoneNumber ||
+                            user.dirtyFirstName ||
+                            user.dirtySecondName ||
+                            user.dirtyEmail
+                        ) {
+                            this.$store.dispatch("editUser", user);
+                            this.closeDialog();
+                        } else {
+                            this.alertValidation = true;
+                        }
                     }
                 } else {
                     this.alertValidation = true;

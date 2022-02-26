@@ -1,16 +1,22 @@
 <template>
     <v-container v-if="userFiltered">
         <users-table :users-list="userFiltered" />
-        <v-timeline :dense="$vuetify.breakpoint.smAndDown">
+        <v-timeline
+            v-if="fieldsUpdated.length"
+            :dense="$vuetify.breakpoint.smAndDown">
             <v-timeline-item
                 v-for="(update, index) in fieldsUpdated"
                 :key="`update-${index}`">
                 <span slot="opposite">{{
-                    humanizedTimeStamp(userReverseUpdates[index].updatedAt)
+                    userReverseUpdates[index].updatedAt
                 }}</span>
                 <v-card class="elevation-2">
                     <v-list dense>
-                        <v-subheader>Change N_{{ userReverseUpdates.length - index }}</v-subheader>
+                        <v-subheader
+                            >Change N_{{
+                                userReverseUpdates.length - index
+                            }}</v-subheader
+                        >
                         <v-list-item-group color="primary">
                             <v-list-item
                                 v-for="(value, name) in update"
@@ -27,14 +33,12 @@
                 </v-card>
             </v-timeline-item>
         </v-timeline>
+        <h3 v-else class="mt-10 text-center" v-text="noUpdatesText"></h3>
     </v-container>
 </template>
 <script>
     import { mapGetters } from "vuex";
-    import relativeTime from "dayjs/plugin/relativeTime";
-    import dayjs from "dayjs";
     import UsersTable from "@/components/UsersTable.vue";
-    dayjs.extend(relativeTime);
 
     export default {
         components: { UsersTable },
@@ -47,20 +51,38 @@
                 );
                 return user;
             },
+            noUpdatesText() {
+                if (this.userFiltered)
+                    return `Any update has been applied to ${this.userFiltered[0]?.firstName} ${this.userFiltered[0]?.lastName}`;
+                return "Something whent grong any data to show";
+            },
             userReverseUpdates() {
                 const updates = [...this.userUpdates];
                 return updates.reverse();
             },
             fieldsUpdated() {
-                const changedFields = this.userReverseUpdates.map((update) => {
-                    const newObject = {};
-                    Object.keys(update).forEach((field) => {
-                      if(field !== "updatedAt"){
-                        if (update[field] !== null && update[field] !== "")
-                            newObject[field] = update[field];}
+                const changedFields = this.userReverseUpdates
+                    .filter(
+                        (update) =>
+                            update.userId === parseInt(this.$route.params.id)
+                    )
+                    .map((update) => {
+                        const newObject = {};
+                        Object.keys(update).forEach((field) => {
+                            if (
+                                field !== "updatedAt" &&
+                                field !== "userId" &&
+                                field !== "id"
+                            ) {
+                                if (
+                                    update[field] !== null &&
+                                    update[field] !== ""
+                                )
+                                    newObject[field] = update[field];
+                            }
+                        });
+                        return newObject;
                     });
-                    return newObject;
-                });
                 return changedFields;
             },
         },
@@ -70,11 +92,6 @@
                 "fetchUserUpdates",
                 this.$route.params.id
             );
-        },
-        methods: {
-            humanizedTimeStamp(date) {
-                return dayjs.unix(dayjs(date).unix()).fromNow();
-            },
         },
     };
 </script>
