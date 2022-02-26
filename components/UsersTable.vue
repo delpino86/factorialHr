@@ -2,8 +2,10 @@
     <v-data-table
         :headers="headers"
         :items="users"
-        sort-by="calories"
-        class="elevation-1">
+        sort-by="createdAt"
+        class="elevation-1"
+        :hide-default-footer="!usersLength"
+        >
         <template #top>
             <v-toolbar flat>
                 <v-toolbar-title>Users Table</v-toolbar-title>
@@ -11,6 +13,7 @@
                 <user-form
                     :edit-toggle="dialog"
                     :user-to-edit="editedItem"
+                    :create-user="true" 
                     @closeDialog="dialogClosed"></user-form>
                 <alert-dialog
                     :activator-alert="dialogDelete"
@@ -29,21 +32,61 @@
             </v-toolbar>
         </template>
         <template #[`item.actions`]="{ item }">
-            <v-btn
-            class="mr-2"
-              color="transparent"
-              fab
-              x-small
-              flat
-              depressed
-              :to="{name:'user-id-userDetail', params: {id: item.id}}"
-            >
-              <v-icon>mdi-face-man-shimmer-outline</v-icon>
-            </v-btn>
-            <v-icon small class="mr-2" @click="editItem(item)">
-                mdi-pencil
-            </v-icon>
-            <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+            <v-tooltip top>
+                <template #activator="{ on, attrs }">
+                    <v-btn
+                        v-if="userProfile"
+                        class="mr-2"
+                        color="transparent"
+                        fab
+                        x-small
+                        flat
+                        depressed
+                        :to="{
+                            name: 'user-id-userDetail',
+                            params: { id: item.id },
+                        }"
+                        v-bind="attrs"
+                        v-on="on">
+                        <v-icon>mdi-face-man-shimmer-outline</v-icon>
+                    </v-btn>
+                </template>
+                <span class="caption">Go to user details</span>
+            </v-tooltip>
+            <v-tooltip top>
+                <template #activator="{ on, attrs }">
+                    <v-btn
+                        class="mr-2"
+                        color="transparent"
+                        fab
+                        x-small
+                        flat
+                        depressed
+                        v-bind="attrs"
+                        @click="editItem(item)"
+                        v-on="on">
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                </template>
+                <span class="caption">Edit user details</span>
+            </v-tooltip>
+            <v-tooltip top>
+                <template #activator="{ on, attrs }">
+                    <v-btn
+                        class="mr-2"
+                        color="transparent"
+                        fab
+                        x-small
+                        flat
+                        depressed
+                        v-bind="attrs"
+                        @click="deleteItem(item)"
+                        v-on="on">
+                        <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                </template>
+                <span class="caption">Delete user details</span>
+            </v-tooltip>
         </template>
         <template #no-data>
             <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -59,6 +102,10 @@
             usersList: {
                 type: Array,
                 default: () => [],
+            },
+            userProfile: {
+                type: Boolean,
+                default: false,
             },
         },
         data: () => ({
@@ -93,6 +140,10 @@
             formTitle() {
                 return this.editedIndex === -1 ? "New Item" : "Edit Item";
             },
+            usersLength(){
+                return this.usersList.length >1;
+            },
+
         },
 
         watch: {

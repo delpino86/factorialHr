@@ -1,7 +1,7 @@
 <template>
     <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="600px">
-            <template #activator="{ on, attrs }">
+            <template v-if="createUser" #activator="{ on, attrs }">
                 <v-btn color="primary" dark v-bind="attrs" v-on="on">
                     New User
                 </v-btn>
@@ -93,6 +93,10 @@
                 type: Object,
                 default: () => {},
             },
+            createUser: {
+                type: Boolean,
+                default: false,
+            },
         },
         data: () => ({
             alertValidation: false,
@@ -130,9 +134,7 @@
             ],
         }),
         computed: {
-            usersssss() {
-                return this.userToEdit;
-            },
+           
             createNewUser() {
                 return Object.keys({ ...this.userToEdit }).length === 0;
             },
@@ -152,15 +154,12 @@
                     this.user.secondName = after.lastName;
                     this.user.email = after.email;
                     this.user.telephoneNumber = after.telephoneNumber;
-                },
-                deep: true,
-            },
-            user: {
-                handler(after, before) {
-                    this.dirtyFirstName = before.firstName;
-                    this.dirtySecondName = before.lastName;
-                    this.dirtyEmail = before.email;
-                    this.dirtytelephoneNumber = before.telephoneNumber;
+                    this.dirtyFirstName= after.firstName;
+                    this.dirtySecondName= after.lastName;
+                    this.dirtyEmail= after.email;
+                    this.dirtyTelephoneNumber= after.telephoneNumber;
+
+
                 },
                 deep: true,
             },
@@ -178,10 +177,10 @@
                         this.closeDialog();
                     } else {
                         user.id = this.userToEdit.id;
-                        user.dirtyFirstName = this.dirtyFirstName;
-                        user.dirtySecondName = this.dirtySecondName;
-                        user.dirtyEmail = this.dirtyEmail;
-                        user.dirtyTelephoneNumber = this.dirtyTelephoneNumber;
+                        this.dirtyFirstName === this.user.firstName? user.dirtyFirstName = null : user.dirtyFirstName = this.dirtyFirstName;
+                        this.dirtySecondName === this.user.secondName? user.dirtySecondName = null : user.dirtySecondName = this.dirtySecondName;
+                        this.dirtyEmail === this.user.email? user.dirtyEmail = null : user.dirtyEmail = this.dirtyEmail;
+                        this.dirtyTelephoneNumber === this.user.telephoneNumber? user.dirtyTelephoneNumber = null : user.dirtyTelephoneNumber = this.dirtyTelephoneNumber;
                         this.$store.dispatch("editUser", user);
                         this.closeDialog();
                     }
