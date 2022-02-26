@@ -4,8 +4,7 @@
         :items="users"
         sort-by="createdAt"
         class="elevation-1"
-        :hide-default-footer="!usersLength"
-        >
+        :hide-default-footer="!usersLength">
         <template #top>
             <v-toolbar flat>
                 <v-toolbar-title>Users Table</v-toolbar-title>
@@ -13,7 +12,7 @@
                 <user-form
                     :edit-toggle="dialog"
                     :user-to-edit="editedItem"
-                    :create-user="true" 
+                    :create-user="true"
                     @closeDialog="dialogClosed"></user-form>
                 <alert-dialog
                     :activator-alert="dialogDelete"
@@ -40,7 +39,6 @@
                         color="transparent"
                         fab
                         x-small
-                        flat
                         depressed
                         :to="{
                             name: 'user-id-userDetail',
@@ -60,7 +58,6 @@
                         color="transparent"
                         fab
                         x-small
-                        flat
                         depressed
                         v-bind="attrs"
                         @click="editItem(item)"
@@ -77,7 +74,6 @@
                         color="transparent"
                         fab
                         x-small
-                        flat
                         depressed
                         v-bind="attrs"
                         @click="deleteItem(item)"
@@ -140,10 +136,9 @@
             formTitle() {
                 return this.editedIndex === -1 ? "New Item" : "Edit Item";
             },
-            usersLength(){
-                return this.usersList.length >1;
+            usersLength() {
+                return this.usersList.length > 1;
             },
-
         },
 
         watch: {

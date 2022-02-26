@@ -134,7 +134,6 @@
             ],
         }),
         computed: {
-           
             createNewUser() {
                 return Object.keys({ ...this.userToEdit }).length === 0;
             },
@@ -154,12 +153,10 @@
                     this.user.secondName = after.lastName;
                     this.user.email = after.email;
                     this.user.telephoneNumber = after.telephoneNumber;
-                    this.dirtyFirstName= after.firstName;
-                    this.dirtySecondName= after.lastName;
-                    this.dirtyEmail= after.email;
-                    this.dirtyTelephoneNumber= after.telephoneNumber;
-
-
+                    this.dirtyFirstName = after.firstName;
+                    this.dirtySecondName = after.lastName;
+                    this.dirtyEmail = after.email;
+                    this.dirtyTelephoneNumber = after.telephoneNumber;
                 },
                 deep: true,
             },
@@ -177,10 +174,19 @@
                         this.closeDialog();
                     } else {
                         user.id = this.userToEdit.id;
-                        this.dirtyFirstName === this.user.firstName? user.dirtyFirstName = null : user.dirtyFirstName = this.dirtyFirstName;
-                        this.dirtySecondName === this.user.secondName? user.dirtySecondName = null : user.dirtySecondName = this.dirtySecondName;
-                        this.dirtyEmail === this.user.email? user.dirtyEmail = null : user.dirtyEmail = this.dirtyEmail;
-                        this.dirtyTelephoneNumber === this.user.telephoneNumber? user.dirtyTelephoneNumber = null : user.dirtyTelephoneNumber = this.dirtyTelephoneNumber;
+                        this.dirtyFirstName === this.user.firstName
+                            ? (user.dirtyFirstName = null)
+                            : (user.dirtyFirstName = this.dirtyFirstName);
+                        this.dirtySecondName === this.user.secondName
+                            ? (user.dirtySecondName = null)
+                            : (user.dirtySecondName = this.dirtySecondName);
+                        this.dirtyEmail === this.user.email
+                            ? (user.dirtyEmail = null)
+                            : (user.dirtyEmail = this.dirtyEmail);
+                        this.dirtyTelephoneNumber === this.user.telephoneNumber
+                            ? (user.dirtyTelephoneNumber = null)
+                            : (user.dirtyTelephoneNumber =
+                                  this.dirtyTelephoneNumber);
                         this.$store.dispatch("editUser", user);
                         this.closeDialog();
                     }

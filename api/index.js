@@ -16,19 +16,26 @@ app.get("/users", async function (req, res) {
     res.json(Users);
 });
 app.get("/user/:id", async function (req, res) {
-    const User = await prisma.User.findUnique(
-        {where: {
+    const User = await prisma.User.findUnique({
+        where: {
             id: parseInt(req.params.id),
-          },}
-    );
+        },
+    });
     res.json(User);
 });
 app.get("/userUpdates/:id", async function (req, res) {
-    const Updates = await prisma.userUpdated.findMany(
-        {where: {
+    const Updates = await prisma.userUpdated.findMany({
+        where: {
             userId: parseInt(req.params.id),
-          },}
-    );
+        },
+        select: {
+            changedFirstName: true,
+            changedLastName: true,
+            changedEmail: true,
+            changedTelephoneNumber: true,
+            updatedAt:true
+        },
+    });
     res.json(Updates);
 });
 
@@ -67,7 +74,7 @@ app.put("/user-edit/:id", async function (req, res) {
     res.json(user);
 });
 app.post("/user-save-edit/:id", async function (req, res) {
-    const Update =  await prisma.userUpdated.create({
+    const Update = await prisma.userUpdated.create({
         data: {
             changedFirstName: req.body.dirtyFirstName,
             changedLastName: req.body.dirtySecondName,
@@ -78,7 +85,6 @@ app.post("/user-save-edit/:id", async function (req, res) {
     });
     res.json(Update);
 });
-
 
 export default {
     path: "/api",

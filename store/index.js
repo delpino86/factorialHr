@@ -7,7 +7,6 @@ export const getters = {
     users: (state) => state.users,
     dialog: (state) => state.dialog,
     userUpdates: (state) => state.userUpdates,
-
 };
 
 export const actions = {
@@ -39,34 +38,37 @@ export const actions = {
         });
 
         if (User) commit("editUser", User);
-        dispatch('addUserUpdate', user);
-
+        dispatch("addUserUpdate", user);
     },
-    async addUserUpdate({commit}, user) {
-        console.log(user, "en store")
-        const Update = await this.$axios.$post(`/api/user-save-edit/${user.id}`, {
-            ...user,
-        });
+    async addUserUpdate({ commit }, user) {
+        console.log(user, "en store");
+        const Update = await this.$axios.$post(
+            `/api/user-save-edit/${user.id}`,
+            {
+                ...user,
+            }
+        );
         if (Update) commit("setUpdate", Update);
-    }
+    },
 };
 
 export const mutations = {
     setAllUsers(state, users) {
         state.users = users;
     },
-    setUser(state, {...user}) {
-        const userExists = state.users.filter(userState => userState.id === user.id);
-        if(!userExists.length) state.users.push(user)
+    setUser(state, { ...user }) {
+        const userExists = state.users.filter(
+            (userState) => userState.id === user.id
+        );
+        if (!userExists.length) state.users.push(user);
     },
-    setUserUpdates(state, {...Updates}) {
-        const updatesArray = Object.keys(Updates)
-    .map(function(key) {
-        return Updates[key];
-    });
-    state.userUpdates = updatesArray;
+    setUserUpdates(state, { ...Updates }) {
+        const updatesArray = Object.keys(Updates).map(function (key) {
+            return Updates[key];
+        });
+        state.userUpdates = updatesArray;
     },
-    setUpdate(state, {...Update}) {
+    setUpdate(state, { ...Update }) {
         state.userUpdates.push(Update);
     },
     deleteUser(state, { ...user }) {
