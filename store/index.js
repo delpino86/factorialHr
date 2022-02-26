@@ -41,7 +41,6 @@ export const actions = {
         dispatch("addUserUpdate", user);
     },
     async addUserUpdate({ commit }, user) {
-        console.log(user, "en store");
         const Update = await this.$axios.$post(
             `/api/user-save-edit/${user.id}`,
             {

@@ -5,10 +5,12 @@
             <v-timeline-item
                 v-for="(update, index) in fieldsUpdated"
                 :key="`update-${index}`">
-                <span slot="opposite">{{ humanizedTimeStamp(update.updatedAt) }}</span>
+                <span slot="opposite">{{
+                    humanizedTimeStamp(userReverseUpdates[index].updatedAt)
+                }}</span>
                 <v-card class="elevation-2">
                     <v-list dense>
-                        <v-subheader>Change N_{{ ++index }}</v-subheader>
+                        <v-subheader>Change N_{{ userReverseUpdates.length - index }}</v-subheader>
                         <v-list-item-group color="primary">
                             <v-list-item
                                 v-for="(value, name) in update"
@@ -28,12 +30,11 @@
     </v-container>
 </template>
 <script>
-    import { mapGetters } from "vuex"
+    import { mapGetters } from "vuex";
     import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
+    import dayjs from "dayjs";
     import UsersTable from "@/components/UsersTable.vue";
-dayjs.extend(relativeTime);
-
+    dayjs.extend(relativeTime);
 
     export default {
         components: { UsersTable },
@@ -46,16 +47,21 @@ dayjs.extend(relativeTime);
                 );
                 return user;
             },
+            userReverseUpdates() {
+                const updates = [...this.userUpdates];
+                return updates.reverse();
+            },
             fieldsUpdated() {
-                const changedFields = this.userUpdates.map((update) => {
+                const changedFields = this.userReverseUpdates.map((update) => {
                     const newObject = {};
                     Object.keys(update).forEach((field) => {
+                      if(field !== "updatedAt"){
                         if (update[field] !== null && update[field] !== "")
-                            newObject[field] = update[field];
+                            newObject[field] = update[field];}
                     });
                     return newObject;
                 });
-                return changedFields.reverse();
+                return changedFields;
             },
         },
         async mounted() {
@@ -66,9 +72,9 @@ dayjs.extend(relativeTime);
             );
         },
         methods: {
-humanizedTimeStamp(date) {
-              return dayjs.unix(dayjs(date).unix()).fromNow()
-            }
+            humanizedTimeStamp(date) {
+                return dayjs.unix(dayjs(date).unix()).fromNow();
+            },
         },
     };
 </script>
