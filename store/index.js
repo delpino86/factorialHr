@@ -114,6 +114,7 @@ export const mutations = {
         );
     },
     editUser(state, { ...user }) {
+        user.createdAt = dayjs.unix(dayjs(user.createdAt).unix()).fromNow();
         const newUsersList = state.users.filter(
             (stateUser) => stateUser.id !== user.id
         );

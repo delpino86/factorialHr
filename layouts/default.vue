@@ -1,7 +1,12 @@
 <template>
     <v-app dark>
         <v-app-bar :clipped-left="clipped" fixed app>
-            <v-btn text depressed rounded :to="{ name: 'index' }">
+            <v-btn
+                v-if="landingPage"
+                text
+                depressed
+                rounded
+                :to="{ name: 'index' }">
                 Users list
             </v-btn>
             <v-spacer />
@@ -53,6 +58,11 @@
                 right: true,
                 rightDrawer: false,
             };
+        },
+        computed: {
+            landingPage() {
+                return this.$route.name !== "index";
+            },
         },
     };
 </script>

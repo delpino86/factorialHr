@@ -12,7 +12,7 @@ app.get("/test", function (req, res) {
 });
 
 app.get("/users", async function (req, res) {
-    const Users = await prisma.User.findMany();
+    const Users = await prisma.User.findMany({ orderBy: { createdAt: "asc" } });
     res.json(Users);
 });
 app.get("/user/:id", async function (req, res) {

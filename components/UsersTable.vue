@@ -2,7 +2,6 @@
     <v-data-table
         :headers="headers"
         :items="users"
-        sort-by="createdAt"
         class="elevation-1"
         :hide-default-footer="!usersLength">
         <template #top>
@@ -85,7 +84,9 @@
             </v-tooltip>
         </template>
         <template #no-data>
-            <h3 class="my-10 text-center font-weight-black text-uppercase">- There are any records to show - </h3>
+            <h3 class="my-10 text-center font-weight-black text-uppercase">
+                - There are any records to show -
+            </h3>
         </template>
     </v-data-table>
 </template>
