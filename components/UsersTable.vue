@@ -144,7 +144,7 @@
 
         watch: {
             dialog(val) {
-                val || console.log(val);
+                val || this.closeDelete();
             },
             usersList: {
                 handler(after, before) {

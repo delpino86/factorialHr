@@ -88,9 +88,7 @@ export const mutations = {
         if (!userExists.length) state.users.push(user);
     },
     setEmailError(state, userError) {
-        console.log(state.emailError);
         state.emailError = userError;
-        console.log(state.emailError);
     },
     setUserUpdates(state, { ...Updates }) {
         const updatesArray = Object.keys(Updates).map(function (key) {
