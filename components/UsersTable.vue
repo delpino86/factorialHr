@@ -85,7 +85,7 @@
             </v-tooltip>
         </template>
         <template #no-data>
-            <v-btn color="primary" @click="initialize"> Reset </v-btn>
+            <h3 class="my-10 text-center font-weight-black text-uppercase">- There are any records to show - </h3>
         </template>
     </v-data-table>
 </template>
