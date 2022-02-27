@@ -58,31 +58,28 @@
             },
             userReverseUpdates() {
                 const updates = [...this.userUpdates];
-                return updates.reverse();
-            },
-            fieldsUpdated() {
-                const changedFields = this.userReverseUpdates
+                return updates
                     .filter(
                         (update) =>
                             update.userId === parseInt(this.$route.params.id)
                     )
-                    .map((update) => {
-                        const newObject = {};
-                        Object.keys(update).forEach((field) => {
-                            if (
-                                field !== "updatedAt" &&
-                                field !== "userId" &&
-                                field !== "id"
-                            ) {
-                                if (
-                                    update[field] !== null &&
-                                    update[field] !== ""
-                                )
-                                    newObject[field] = update[field];
-                            }
-                        });
-                        return newObject;
+                    .reverse();
+            },
+            fieldsUpdated() {
+                const changedFields = this.userReverseUpdates.map((update) => {
+                    const newObject = {};
+                    Object.keys(update).forEach((field) => {
+                        if (
+                            field !== "updatedAt" &&
+                            field !== "userId" &&
+                            field !== "id"
+                        ) {
+                            if (update[field] !== null && update[field] !== "")
+                                newObject[field] = update[field];
+                        }
                     });
+                    return newObject;
+                });
                 return changedFields;
             },
         },

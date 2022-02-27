@@ -33,15 +33,25 @@ app.get("/userUpdates/:id", async function (req, res) {
 });
 
 app.post(`/user-create`, async (req, res) => {
-    const result = await prisma.User.create({
-        data: {
-            email: req.body.email,
-            firstName: req.body.firstName,
-            lastName: req.body.secondName,
-            telephoneNumber: req.body.telephoneNumber,
-        },
-    });
-    res.json(result);
+    try {
+        const result = await prisma.User.create({
+            data: {
+                email: req.body.email,
+                firstName: req.body.firstName,
+                lastName: req.body.secondName,
+                telephoneNumber: req.body.telephoneNumber,
+            },
+        });
+        res.json(result);
+    } catch (e) {
+        if (e.code === "P2002") {
+            res.send(
+                "The email introduced is registered, a new user cannot be created with this email"
+            );
+        } else {
+            res.send("There is a problem the user has not been saved");
+        }
+    }
 });
 app.delete("/user-delete/:id", async function (req, res) {
     await prisma.User.delete({
@@ -52,19 +62,29 @@ app.delete("/user-delete/:id", async function (req, res) {
     res.send(true);
 });
 app.put("/user-edit/:id", async function (req, res) {
-    const user = await prisma.User.update({
-        where: {
-            id: parseInt(req.params.id),
-        },
+    try {
+        const user = await prisma.User.update({
+            where: {
+                id: parseInt(req.params.id),
+            },
 
-        data: {
-            email: req.body.email,
-            firstName: req.body.firstName,
-            lastName: req.body.secondName,
-            telephoneNumber: req.body.telephoneNumber,
-        },
-    });
-    res.json(user);
+            data: {
+                email: req.body.email,
+                firstName: req.body.firstName,
+                lastName: req.body.secondName,
+                telephoneNumber: req.body.telephoneNumber,
+            },
+        });
+        res.json(user);
+    } catch (e) {
+        if (e.code === "P2002") {
+            res.send(
+                "The email introduced is registered, a new user cannot be created with this email"
+            );
+        } else {
+            res.send("There is a problem the user has not been saved");
+        }
+    }
 });
 app.post("/user-save-edit/:id", async function (req, res) {
     const Update = await prisma.userUpdated.create({

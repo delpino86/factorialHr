@@ -66,9 +66,9 @@
         </v-dialog>
         <alert-dialog
             :activator-alert="alertValidation"
-            :title-alert="'Some of the data has to be reviwed before carry on'"
+            :title-alert="AlertDialogTitle"
             @cancelAlert="alertValidation = false">
-            <v-btn color="blue darken-1" text @click="alertValidation = false">{{
+            <v-btn color="blue darken-1" text @click="returnToForm">{{
                 AlertReturnBtn
             }}</v-btn>
             <v-btn color="blue darken-1" text @click="closeDialog">{{
@@ -78,6 +78,8 @@
     </v-row>
 </template>
 <script>
+    import { mapGetters } from "vuex";
+
     import AlertDialog from "../components/AlertDialog.vue";
 
     export default {
@@ -134,12 +136,14 @@
             ],
         }),
         computed: {
+            ...mapGetters(["emailError"]),
+
             createNewUser() {
                 return Object.keys({ ...this.userToEdit }).length === 0;
             },
             cardTitle() {
                 return !this.createNewUser
-                    ? `Edit ${this.firstName} profile`
+                    ? `Edit ${this.user.firstName} profile`
                     : "Create new user";
             },
             AlertReturnBtn() {
@@ -151,10 +155,19 @@
                     return `Cancel Update ${this.user.firstName}`;
                 return "Cancel new user";
             },
+            AlertDialogTitle() {
+                if (this.emailError.length) return this.emailError;
+                return "Some of the data has to be reviwed before carry on";
+            },
         },
         watch: {
             editToggle() {
                 this.dialog = this.editToggle;
+            },
+            emailError() {
+                this.emailError.length
+                    ? (this.alertValidation = true)
+                    : (this.alertValidation = false);
             },
             userToEdit: {
                 handler(after, before) {
@@ -175,12 +188,13 @@
                 const validate = this.$refs.form.validate();
                 return validate;
             },
-            addUser() {
+            async addUser() {
                 if (this.validate()) {
                     const user = { ...this.user };
                     if (this.createNewUser) {
-                        this.$store.dispatch("addUser", user);
-                        this.closeDialog();
+                        await this.$store.dispatch("addUser", user);
+                        if (this.alertValidation) return "";
+                        else this.closeDialog();
                     } else {
                         user.id = this.userToEdit.id;
                         this.dirtyFirstName === this.user.firstName
@@ -202,8 +216,9 @@
                             user.dirtySecondName ||
                             user.dirtyEmail
                         ) {
-                            this.$store.dispatch("editUser", user);
-                            this.closeDialog();
+                            await this.$store.dispatch("editUser", user);
+                            if (this.alertValidation) return "";
+                            else this.closeDialog();
                         } else {
                             this.alertValidation = true;
                         }
@@ -216,6 +231,15 @@
                 this.alertValidation = false;
                 this.dialog = false;
                 this.$emit("closeDialog");
+                this.resetValidation();
+                this.$store.dispatch("resetError");
+            },
+            resetValidation() {
+                this.$refs.form.resetValidation();
+            },
+            returnToForm() {
+                this.$store.dispatch("resetError");
+                this.alertValidation = false;
             },
         },
     };

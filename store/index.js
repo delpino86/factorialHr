@@ -6,11 +6,13 @@ export const state = () => ({
     users: [],
     dialog: false,
     userUpdates: [],
+    emailError: "",
 });
 export const getters = {
     users: (state) => state.users,
     dialog: (state) => state.dialog,
     userUpdates: (state) => state.userUpdates,
+    emailError: (state) => state.emailError,
 };
 
 export const actions = {
@@ -27,8 +29,6 @@ export const actions = {
     },
     async fetchUserUpdates({ commit }, id) {
         const Updates = await this.$axios.$get(`/api/userUpdates/${id}`);
-        // commit("setUserUpdates", Updates);
-
         const updatesArray = Object.keys(Updates).map(function (key) {
             return Updates[key];
         });
@@ -38,7 +38,12 @@ export const actions = {
     },
     async addUser({ commit }, user) {
         const User = await this.$axios.$post("/api/user-create", { ...user });
-        commit("setUser", User);
+        if (typeof User === "object") {
+            commit("setUser", User);
+            commit("setEmailError", "");
+        } else {
+            commit("setEmailError", User);
+        }
     },
     async deleteUser({ commit }, user) {
         const User = await this.$axios.$delete(`/api/user-delete/${user.id}`);
@@ -52,8 +57,12 @@ export const actions = {
             ...user,
         });
 
-        if (User) commit("editUser", User);
-        dispatch("addUserUpdate", user);
+        if (typeof User === "object") {
+            commit("editUser", User);
+            dispatch("addUserUpdate", user);
+        } else {
+            commit("setEmailError", User);
+        }
     },
     async addUserUpdate({ commit }, user) {
         const Update = await this.$axios.$post(
@@ -63,6 +72,9 @@ export const actions = {
             }
         );
         if (Update) commit("setUpdate", Update);
+    },
+    resetError({ commit }) {
+        commit("setEmailError", "");
     },
 };
 
@@ -74,6 +86,11 @@ export const mutations = {
             (userState) => userState.id === user.id
         );
         if (!userExists.length) state.users.push(user);
+    },
+    setEmailError(state, userError) {
+        console.log(state.emailError);
+        state.emailError = userError;
+        console.log(state.emailError);
     },
     setUserUpdates(state, { ...Updates }) {
         const updatesArray = Object.keys(Updates).map(function (key) {
