@@ -3,7 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="600px">
             <template v-if="createUser" #activator="{ on, attrs }">
                 <v-btn text v-bind="attrs" rounded depressed v-on="on">
-                    New User
+                     Create New User
                 </v-btn>
             </template>
             <v-card>
@@ -132,7 +132,7 @@
                         /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s.]{0,1}[0-9]{3}[-\s.]{0,1}[0-9]{3}$/.test(
                             v
                         )) ||
-                    "Must have at least 9 numbers",
+                    "Must have 9 numbers",
             ],
         }),
         computed: {
