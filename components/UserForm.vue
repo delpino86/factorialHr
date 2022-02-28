@@ -3,7 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="600px">
             <template v-if="createUser" #activator="{ on, attrs }">
                 <v-btn text v-bind="attrs" rounded depressed v-on="on">
-                    New User
+                     Create New User
                 </v-btn>
             </template>
             <v-card>

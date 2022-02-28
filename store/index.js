@@ -20,7 +20,6 @@ export const actions = {
         const Users = await this.$axios.$get("/api/users");
         Users.forEach((user) => {
             commit("setStateUsers", user);
-
         });
     },
     async fetchUser({ commit }, id) {
@@ -80,7 +79,6 @@ export const actions = {
 };
 
 export const mutations = {
-    
     setStateUsers(state, { ...user }) {
         user.createdAt = dayjs.unix(dayjs(user.createdAt).unix()).fromNow();
         const newUsersList = state.users.filter(
@@ -101,7 +99,7 @@ export const mutations = {
         );
         if (!exist) state.userUpdates.push(Update);
     },
-    
+
     deleteUserUpdates(state, { ...user }) {
         state.userUpdates = state.userUpdates.filter(
             (updates) => updates.userId !== user.id

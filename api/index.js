@@ -90,7 +90,6 @@ app.delete("/user-delete/:id", async function (req, res) {
 
 // @desc POST User updates to prisma Db
 
-
 app.post("/user-save-edit/:id", async function (req, res) {
     const Update = await prisma.userUpdated.create({
         data: {
