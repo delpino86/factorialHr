@@ -1,14 +1,17 @@
 <template>
     <v-app dark>
         <v-app-bar :clipped-left="clipped" fixed app>
-            <v-btn
-                v-if="landingPage"
-                text
-                depressed
-                rounded
-                :to="{ name: 'index' }">
-                Users list
-            </v-btn>
+            <transition name="fab-transition">
+                <v-btn
+                    v-if="landingPage"
+                    transition="fab-transition"
+                    text
+                    depressed
+                    rounded
+                    :to="{ name: 'index' }">
+                    Users list
+                </v-btn>
+            </transition>
             <v-spacer />
         </v-app-bar>
         <v-main>
