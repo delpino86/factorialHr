@@ -1,20 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 
 const express = require("express");
-
 const prisma = new PrismaClient();
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/test", function (req, res) {
-    res.send("Test successful");
-});
+// @desc GET all Users from prisma Db
 
 app.get("/users", async function (req, res) {
     const Users = await prisma.User.findMany({ orderBy: { createdAt: "asc" } });
     res.json(Users);
 });
+
+// @desc GET User by unique id from prisma Db
+
 app.get("/user/:id", async function (req, res) {
     const User = await prisma.User.findUnique({
         where: {
@@ -23,14 +24,8 @@ app.get("/user/:id", async function (req, res) {
     });
     res.json(User);
 });
-app.get("/userUpdates/:id", async function (req, res) {
-    const Updates = await prisma.userUpdated.findMany({
-        where: {
-            userId: parseInt(req.params.id),
-        },
-    });
-    res.json(Updates);
-});
+
+// @desc POST New user to prisma Db unique email restriction
 
 app.post(`/user-create`, async (req, res) => {
     try {
@@ -53,14 +48,9 @@ app.post(`/user-create`, async (req, res) => {
         }
     }
 });
-app.delete("/user-delete/:id", async function (req, res) {
-    await prisma.User.delete({
-        where: {
-            id: parseInt(req.params.id),
-        },
-    });
-    res.send(true);
-});
+
+// @desc PUT Update User from prisma Db unique email restriction
+
 app.put("/user-edit/:id", async function (req, res) {
     try {
         const user = await prisma.User.update({
@@ -86,6 +76,21 @@ app.put("/user-edit/:id", async function (req, res) {
         }
     }
 });
+
+// @desc DELETE User from prisma Db oDelete cascade userUpdates
+
+app.delete("/user-delete/:id", async function (req, res) {
+    await prisma.User.delete({
+        where: {
+            id: parseInt(req.params.id),
+        },
+    });
+    res.send(true);
+});
+
+// @desc POST User updates to prisma Db
+
+
 app.post("/user-save-edit/:id", async function (req, res) {
     const Update = await prisma.userUpdated.create({
         data: {
@@ -98,6 +103,17 @@ app.post("/user-save-edit/:id", async function (req, res) {
     });
 
     res.json(Update);
+});
+
+// @desc GET User updates by unique Userid from prisma Db
+
+app.get("/userUpdates/:id", async function (req, res) {
+    const Updates = await prisma.userUpdated.findMany({
+        where: {
+            userId: parseInt(req.params.id),
+        },
+    });
+    res.json(Updates);
 });
 
 export default {
