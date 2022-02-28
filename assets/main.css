@@ -1,0 +1,9 @@
+.general-enter-active,
+.index-leave-active {
+    transition: opacity 1s;
+}
+.general-enter,
+.index-leave-active {
+    transition: opacity 1s;
+    opacity: 0;
+}
